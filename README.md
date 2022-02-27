@@ -132,7 +132,7 @@ Now, in order to create & share \ present these drives (iscasi luns) to other no
         7. Add Target IP Address 10.0.0.15 & 10.0.0.20
         8. Repeat process for all drives which needs to be added
 
-### d. Configuring Shared Drives on gogate-node-1 & gogate-node-2
+### d. Configuring Shared Drives on gosi-node-1 & gosi-node-2
         1. Open "iSCSI initiator"
         2. Specify target - 10.0.0.10
         3. Click on Volumes & Devices --> Auto Configure
