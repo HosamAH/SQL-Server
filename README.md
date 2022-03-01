@@ -22,11 +22,11 @@ Very first step in configuring SQL Server 2019 cluster is to have Windows Cluste
         1. This PC --> Properties --> Advanced System Settings --> Computer Name (GOSI-DC)
    #### IP Addresses
         1. Control Panel --> Network & Internet --> Network and Sharing Center --> Ethernet0 --> Properties --> Internet Protocol Verstion 4 --> (TCP/IPv4)
-           - Static IP Address : 192.168.80.10 (https://www.paessler.com/it-explained/ip-address) & (https://www.rapidtables.com/convert/number/binary-to-decimal.html)
-           - Subnet Mask : 255.255.255.0 (https://www.paessler.com/it-explained/ip-address)
-           - Default Gateway : 192.168.80.2 [Same for all VMs] (https://en.wikipedia.org/wiki/Default_gateway)
-           - Preferred DNS Server : 192.168.80.10 [Same for all VMs] (https://www.cloudflare.com/learning/dns/what-is-a-dns-server/)
-           - Alternet DNS Server : 192.168.80.2 
+           - Static IP Address    : 192.168.80.10
+           - Subnet Mask          : 255.255.255.0
+           - Default Gateway      : 192.168.80.2 [Same for all VMs] 
+           - Preferred DNS Server : 192.168.80.10 [Same for all VMs]
+           - Alternet DNS Server  : 192.168.80.2 
    #### Disable Firewall
         1. Control Panel --> System and Security --> Windows Defender Firewall --> Turn Off Windows Defender Firewall
 ## 2. Domain Controller Configurations   
@@ -62,11 +62,11 @@ Very first step in configuring SQL Server 2019 cluster is to have Windows Cluste
         1. This PC --> Properties --> Advanced System Settings --> Computer Name (GOSI-NODE1)
    #### IP Addresses
         1. Control Panel --> Network & Internet --> Network and Sharing Center --> Ethernet0 --> Properties --> Internet Protocol Verstion 4 --> (TCP/IPv4)
-           - Static IP Address : 192.168.80.15 (https://www.paessler.com/it-explained/ip-address) & (https://www.rapidtables.com/convert/number/binary-to-decimal.html)
-           - Subnet Mask : 255.255.255.0 (https://www.paessler.com/it-explained/ip-address)
-           - Default Gateway : 192.168.80.2 [Same for all VMs] (https://en.wikipedia.org/wiki/Default_gateway)
-           - Preferred DNS Server : 192.168.80.10 [Same for all VMs] (https://www.cloudflare.com/learning/dns/what-is-a-dns-server/)
-           - Alternet DNS Server : Keep blank 
+           - Static IP Address    : 192.168.80.15 
+           - Subnet Mask          : 255.255.255.0 
+           - Default Gateway      : 192.168.80.2 [Same for all VMs]
+           - Preferred DNS Server : 192.168.80.10 [Same for all VMs] 
+           - Alternet DNS Server  : Keep blank 
    #### Disable Firewall
         1. Control Panel --> System and Security --> Windows Defender Firewall --> Turn Off Windows Defender Firewall
  ### Installation of node-2
@@ -77,11 +77,11 @@ Very first step in configuring SQL Server 2019 cluster is to have Windows Cluste
         1. This PC --> Properties --> Advanced System Settings --> Computer Name (GOSI-NODE2)
    #### IP Addresses
         1. Control Panel --> Network & Internet --> Network and Sharing Center --> Ethernet0 --> Properties --> Internet Protocol Verstion 4 --> (TCP/IPv4)
-           - Static IP Address : 192.168.80.20 (https://www.paessler.com/it-explained/ip-address) & (https://www.rapidtables.com/convert/number/binary-to-decimal.html)
-           - Subnet Mask : 255.255.255.0 (https://www.paessler.com/it-explained/ip-address)
-           - Default Gateway : 192.168.80.2 [Same for all VMs] (https://en.wikipedia.org/wiki/Default_gateway)
-           - Preferred DNS Server : 192.168.80.10 [Same for all VMs] (https://www.cloudflare.com/learning/dns/what-is-a-dns-server/)
-           - Alternet DNS Server : Keep blank
+           - Static IP Address    : 192.168.80.20 
+           - Subnet Mask          : 255.255.255.0 
+           - Default Gateway      : 192.168.80.2 [Same for all VMs] 
+           - Preferred DNS Server : 192.168.80.10 [Same for all VMs] 
+           - Alternet DNS Server  : Keep blank
    #### Disable Firewall
         1. Control Panel --> System and Security --> Windows Defender Firewall --> Turn Off Windows Defender Firewall
 
@@ -116,7 +116,7 @@ Now, in order to create & share \ present these drives (iscasi luns) to other no
         1. Player --> Manage --> Virtual Machine Settings 
         2. Click Add --> Select Network Adapter
         3. Assign static IP Address for all 3 nodes as below
-           - for DC           -- 10.0.0.10
+           - for DC          -- 10.0.0.10
            - for GOSI-NODE1  -- 10.0.0.15
            - for GOSI-NODE2  -- 10.0.0.20
         4. Disable Windows Firewall
@@ -144,7 +144,7 @@ Now, in order to create & share \ present these drives (iscasi luns) to other no
         9. Specify Drive Letter
         10. Specify following settings
            - File System - NTFS
-           - Allocation Unit Size -- 64 KB (https://blog.sqlserveronline.com/2017/12/08/sql-server-64kb-allocation-unit-size/)
+           - Allocation Unit Size -- 64 KB 
            - Volume Label
            - Select "Perform Quick Format"
            - Finish
@@ -207,7 +207,7 @@ In order to configure SQL Server 2019 Cluster we should first have Windows Serve
        
 ### b. Grant Windows Rights to SQL Server Service account
     1. Open "Local Group Policy Editor"
-    2. Add above listed SA accounts to following listing - https://www.sqlshack.com/perform-volume-maintenance-tasks-security-policy/
+    2. Add above listed SA accounts to following listing
        - Perform volume maintenance tasks
        - Lock pages in memory
 
