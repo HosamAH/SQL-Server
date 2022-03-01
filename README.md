@@ -42,7 +42,7 @@ Very first step in configuring SQL Server 2019 cluster is to have Windows Cluste
     2. Click More
     3. Select Action - Promote server to domain controller
     4. Add a new forest (Since we don't have any existing domain)
-    5. Give domain name as - gogates.local [you can give any name which you want eg. abc.xyz.pqr]
+    5. Give domain name as - GOSI.LOCAL [you can give any name which you want eg. abc.xyz.pqr]
     6. Click Next
     7. Specify DSRM (directory service recovery mode) password
     8. No need to create DNS deligation
@@ -59,7 +59,7 @@ Very first step in configuring SQL Server 2019 cluster is to have Windows Cluste
 2. Change machine name 
 3. Allocate IP Address
    #### Computer Name 
-        1. This PC --> Properties --> Advanced System Settings --> Computer Name (gosi-node-1)
+        1. This PC --> Properties --> Advanced System Settings --> Computer Name (GOSI-NODE1)
    #### IP Addresses
         1. Control Panel --> Network & Internet --> Network and Sharing Center --> Ethernet0 --> Properties --> Internet Protocol Verstion 4 --> (TCP/IPv4)
            - Static IP Address : 192.168.80.15 (https://www.paessler.com/it-explained/ip-address) & (https://www.rapidtables.com/convert/number/binary-to-decimal.html)
@@ -74,7 +74,7 @@ Very first step in configuring SQL Server 2019 cluster is to have Windows Cluste
 2. Change machine name 
 3. Allocate IP Address
    #### Computer Name 
-        1. This PC --> Properties --> Advanced System Settings --> Computer Name (gosi-node-2)
+        1. This PC --> Properties --> Advanced System Settings --> Computer Name (GOSI-NODE2)
    #### IP Addresses
         1. Control Panel --> Network & Internet --> Network and Sharing Center --> Ethernet0 --> Properties --> Internet Protocol Verstion 4 --> (TCP/IPv4)
            - Static IP Address : 192.168.80.20 (https://www.paessler.com/it-explained/ip-address) & (https://www.rapidtables.com/convert/number/binary-to-decimal.html)
@@ -86,10 +86,10 @@ Very first step in configuring SQL Server 2019 cluster is to have Windows Cluste
         1. Control Panel --> System and Security --> Windows Defender Firewall --> Turn Off Windows Defender Firewall
 
 ## 4. Adding nodes to Domain
-1. Validate if you can ping to Domain from both the nodes - ping gosi.local
+1. Validate if you can ping to Domain from both the nodes - ping GOSI.LOCAL
 2. Assign domain name for both nodes 
-   - This PC --> Properties --> Advanced System Settings --> Member Of Domain - gosi.local
-   - Specify credentials for Domain Admin - gosi\Administrator & P@ssword#123
+   - This PC --> Properties --> Advanced System Settings --> Member Of Domain - GOSI.LOCAL
+   - Specify credentials for Domain Admin - GOSI\Administrator & P@ssword1
    - Restart server
    - Follow same steps for both nodes
    - While logging you should be able to login as Domain Administrator user instead of local Administrator
@@ -116,9 +116,9 @@ Now, in order to create & share \ present these drives (iscasi luns) to other no
         1. Player --> Manage --> Virtual Machine Settings 
         2. Click Add --> Select Network Adapter
         3. Assign static IP Address for all 3 nodes as below
-           - for DC             -- 10.0.0.10
-           - for gosi-node-1  -- 10.0.0.15
-           - for gosi-node-2  -- 10.0.0.20
+           - for DC           -- 10.0.0.10
+           - for GOSI-NODE1  -- 10.0.0.15
+           - for GOSI-NODE2  -- 10.0.0.20
         4. Disable Windows Firewall
         5. Check the connectivity from DC
     
@@ -132,7 +132,7 @@ Now, in order to create & share \ present these drives (iscasi luns) to other no
         7. Add Target IP Address 10.0.0.15 & 10.0.0.20
         8. Repeat process for all drives which needs to be added
 
-### d. Configuring Shared Drives on gosi-node-1 & gosi-node-2
+### d. Configuring Shared Drives on GOSI-NODE1 & GOSI-NODE2
         1. Open "iSCSI initiator"
         2. Specify target - 10.0.0.10
         3. Click on Volumes & Devices --> Auto Configure
@@ -159,12 +159,12 @@ Now, in order to create & share \ present these drives (iscasi luns) to other no
 
 
 ## 6. Installing & Configuring Windows Server 2019 Cluster
-As we discussed in very first video, in order to configure SQL Server 2019 Cluster we should first have Windows Server 2019 cluster. This Windows Cluster 2019 will be between gosi-node-1 & gosi-node-2, as Domain Controller node is not required now.
+In order to configure SQL Server 2019 Cluster we should first have Windows Server 2019 cluster. This Windows Cluster 2019 will be between GOSI-NODE1 & GOSI-NODE2, as Domain Controller node is not required now.
 ### a. Add new Network Adapter Cards
     1. First step of this process is to add 2 separate NIC Cards to each node
     2. Assign IP Address to each of them as below
-       - gosi-node-1 - 172.16.0.15
-       - gosi-node-2 - 172.16.0.20
+       - GOSI-NODE1 - 172.16.0.15
+       - GOSI-NODE2 - 172.16.0.20
     3. Disable Firewall
     4. Restart both nodes
 ### b. Install fail-over cluster feature on both nodes
@@ -178,7 +178,7 @@ As we discussed in very first video, in order to configure SQL Server 2019 Clust
 ### c. Configure Windows Cluster
     1. Open "Failover Cluster Manager"
     2. Select "Create Cluster"
-    3. Add both nodes gosi-node-1 & gosi-node-2
+    3. Add both nodes GOSI-NODE1 & GOSI-NODE2
     4. Perform validation by selecting all required tests
     5. Validate the report and check the status 
     6. Specify cluser name - WinServerCluster
@@ -196,14 +196,14 @@ As we discussed in very first video, in order to configure SQL Server 2019 Clust
 
 ### a. Creating Service Accounts
     1. Open "Active Directory Users and Computers"
-    2. Create AD Group "SQL PRD ADMIN" for all Admins, and give Domain Admin or Local Admin access to this group.
-    3. Add individual Domain Accounts to "SQL PROD ADMIN". e.g. Add gosi\hosam or gosi\ali to group "SQL PRD ADMIN"
-    4. Make AD Group "SQL PRD ADMIN" as a Local Admin to each node
+    2. Create AD Group "SQL ADMIN" for all Admins, and give Domain Admin or Local Admin access to this group.
+    3. Add individual Domain Accounts to "SQL ADMIN". e.g. Add GOSI\hosam or GOSI\ali to group "SQL ADMIN"
+    4. Make AD Group "SQL ADMIN" as a Local Admin to each node
        - Open "Edit Local Users and Groups"
-       - Under Groups section, select "Administrator" group and add "SQL PRD ADMIN" in it.
+       - Under Groups section, select "Administrator" group and add "SQL ADMIN" in it.
     5. Create separate Service Accounts for each SQL Service as below
-       - SQL.PRD.SERVER
-       - SQL.PRD.AGENT   
+       - SQL.SERVER
+       - SQL.AGENT   
        
 ### b. Grant Windows Rights to SQL Server Service account
     1. Open "Local Group Policy Editor"
