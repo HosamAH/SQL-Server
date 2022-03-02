@@ -197,7 +197,7 @@ In order to configure SQL Server 2019 Cluster we should first have Windows Serve
 ### a. Creating Service Accounts
     1. Open "Active Directory Users and Computers"
     2. Create AD Group "SQL ADMIN" for all Admins, and give Domain Admin or Local Admin access to this group.
-    3. Add individual Domain Accounts to "SQL ADMIN". e.g. Add GOSI\hosam or GOSI\ali to group "SQL ADMIN"
+    3. Add individual Domain Accounts to "SQL ADMIN". e.g. Add GOSI\3114 or GOSI\3115 to group "SQL ADMIN"
     4. Make AD Group "SQL ADMIN" as a Local Admin to each node
        - Open "Edit Local Users and Groups"
        - Under Groups section, select "Administrator" group and add "SQL ADMIN" in it.
@@ -211,19 +211,13 @@ In order to configure SQL Server 2019 Cluster we should first have Windows Serve
        - Perform volume maintenance tasks
        - Lock pages in memory
 
-### c. Benchmarking LUNs or Speed Checks of Shared Drives
-    1. Download & Install "Crystal Disk" software from https://osdn.net/projects/crystaldiskmark/downloads/71859/CrystalDiskMark7_0_0h.exe/
-    2. How to read "Crystal Disk" results - https://www.brentozar.com/archive/2012/03/how-fast-your-san-or-how-slow/
-    3. Use Microsoft DiskSpd from - https://docs.microsoft.com/en-us/azure-stack/hci/manage/diskspd-overview
-
-### d. Changing to CSVFS (Cluster Shared Volume File System) format
+### c. Changing to CSVFS (Cluster Shared Volume File System) format
     1. Sharing Disks between 2 nodes
        - Open Administrative Tools --> Failover Cluster Manager
        - Create 2 Empty Roles - Node1 & Node2
        - Assign Preferred Owner as Node1, Node2 & vice versa       
        - Assign Storage to each node
-    3. or instead use CSVFS - Why its needed?
-    4. More information on https://docs.microsoft.com/en-us/windows-server/failover-clustering/failover-cluster-csvs
+       
 
 ## 8. SQL Server 2019 Installation 
 1. SQL Server Editions & Licencing 
