@@ -222,43 +222,49 @@ In order to configure SQL Server 2019 Cluster we should first have Windows Serve
 ## 8. SQL Server 2019 Installation 
 1. SQL Server Editions & Licencing 
     https://download.microsoft.com/download/6/6/0/66078040-86d8-4f6e-b0c5-e9919bbcb537/SQL%20Server%202019%20Licensing%20guide.pdf <br>
-
+    You can validate the cores by
+    1. Control Panel\System and Security\System and check Processors
+    2. Or Open task manager --> Open Resoure Monitor --> Click on CPU
+    3. Or Advanced System Settings --> Hardware --> Device Manager --> Processors
 2. Download SQL Server Developer Edition from https://www.microsoft.com/en-us/sql-server/sql-server-downloads
-    2.1. Once download, run the installer and choose "Download Media" option
-    2.2. Select following options on next screen
+    1. Once download, run the installer and choose "Download Media" option
+    2. Select following options on next screen
        - Choose ISO image for download
        - Location as G:\Softwares\SQLServer2019
        - Click download
-    2.3. Once download finishes, copy ISO image to respective node where you want to install SQL Server
-    2.4. Click on ISO, and you can start SQL Server Installation by running Setup.exe
-
-
-3. Installation Steps:
-    3.1. Re-Name Network:
+    3. Once download finishes, copy ISO image to respective node where you want to install SQL Server
+    4. Click on ISO, and you can start SQL Server Installation by running Setup.exe
+3. Installation Steps
+    1. Create directories as below
+       - C:\ClusterStorage\Volume1\MSSQL\Data01
+       - C:\ClusterStorage\Volume2\MSSQL\Data02
+       - C:\ClusterStorage\Volume3\MSSQL\Log01
+       - C:\ClusterStorage\Volume4\MSSQL\Log02
+       - C:\ClusterStorage\Volume5\MSSQL\Temp01
+       - C:\ClusterStorage\Volume6\MSSQL\Temp02
+    2. Re-Name Network 
        - Cluster Network 1 --> Cluster Nodes
        - Cluster Network 2 --> Shared Drives
        - Cluster Network 3 --> Heartbeat [This will verify if both nodes are up & running; if one of the node is down, it will start failover]
-    3.2. Choose "Installation" --> "New SQL Server Failover Cluster Installation"
-    3.3. Specify Edition --> (Developer)
-    3.4. Accept Lincese Aggregement
-    3.5. Feature Selection - We are going to install only "Database Engine Service".
-    3.6. Select installation directories as follows
-       - Instance Root Directory - C:\Program Files\Microsoft SQL Server\ 
+    3. Choose "Installation" --> "New SQL Server Failover Cluster Installation"
+    4. Specify Edition --> (Developer)
+    6. Accept Lincese Aggregement
+    7. Feature Selection - We are going to install only "Database Engine Service".
+    8. Select installation directories as follows
+       - Instance Root Directory - C:\Program Files\Microsoft SQL Server\
        - Shared Feature Directory - C:\Program Files\Microsoft SQL Server\
        - Shared Feature Directory (x86) - C:\Program Files (x86)\Microsoft SQL Server\
-
-
-    9. Specify SQL Server Network Name - GOSINET 
+    9. Specify SQL Server Network Name - dgogate 
     10. This will be used to connect to SQL Server, you can skip named instance and keep default instance
     11. Specify Disks which you want to allocate to that SQL Server instance. In our case Disk 1,3,5 are for first instance & Disk 2,4,6 are for second instance
     12. Specify IP Address for SQL failover cluster - this has to be of same range \ network of your node - which is 192.168.80.30
     13. Specify Service Accounts & Change startup type to Automatic
-       - SQL Server Agent - SQL.AGENT & Specify Password
-       - SQL Server Database Engine - SQL.SERVER & Specify Password
+       - SQL Server Agent - SQL.PRD.AGENT & Specify Password
+       - SQL Server Database Engine - SQL.PRD.SERVER & Specify Password
        - Select "Grant Perform Volume Maintenance Tasks privileges to SQL Server Database Engine Services"
     14. Select "Mixed Mode" Authentication
-       - Specify password for SA account as "P@ssword1"
-       - Add group "SQL ADMIN" as SQL Administrator
+       - Specify password for SA account as "P@ssword#123"
+       - Add group "SQL PRD ADMIN" as SQL Administrator
     15. Specify Data Directories     
        - Select data root directory as "C:\ClusterStorage\Volume1\MSSQL\Data01"
        - Select User database directory as "C:\ClusterStorage\Volume1\MSSQL\Data01\MSSQL15.DGOGATE\MSSQL\Data"
