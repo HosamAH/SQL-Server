@@ -24,7 +24,7 @@ Very first step in configuring SQL Server 2019 cluster is to have Windows Cluste
         1. Control Panel --> Network & Internet --> Network and Sharing Center --> Ethernet0 --> Properties --> Internet Protocol Verstion 4 --> (TCP/IPv4)
            - Static IP Address    : 192.168.80.10
            - Subnet Mask          : 255.255.255.0
-           - Default Gateway      : 192.168.80.2 [Same for all VMs] 
+           - Default Gateway      : 192.168.80.2  [Same for all VMs] 
            - Preferred DNS Server : 192.168.80.10 [Same for all VMs]
            - Alternet DNS Server  : 192.168.80.2 
    #### Disable Firewall
