@@ -5,10 +5,9 @@
 In this article we are going to see how to configure SQL Server 2019 Active / Active Cluster. Following are the pre-requisit for that
 
 ## Softwares needed
-1. Windows Server 2019 Evaluation Edition, which you can download from 
-    https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2019
-2. Vritualization Software - You can download VMWare Workstattion for free from following link for non-prod environment 
-    https://www.vmware.com/products/workstation-pro/workstation-pro-evaluation.html
+1. Windows Server 2019 Evaluation Edition - https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2019
+
+3. Vritualization Software - https://www.vmware.com/products/workstation-pro/workstation-pro-evaluation.html
 
 
 # Configuring Windows Server Cluster
@@ -42,11 +41,11 @@ Very first step in configuring SQL Server 2019 cluster is to have Windows Cluste
     2. Click More
     3. Select Action - Promote server to domain controller
     4. Add a new forest (Since we don't have any existing domain)
-    5. Give domain name as - GOSI.LOCAL [you can give any name which you want eg. abc.xyz.pqr]
+    5. Give domain name as - gosi.gov.sa [you can give any name which you want eg. abc.xyz.pqr]
     6. Click Next
     7. Specify DSRM (directory service recovery mode) password
     8. No need to create DNS deligation
-    9. NetBIOS domain name -- keep it default (it will appear as gogates as we had mentioned domain as gogates.local)
+    9. NetBIOS domain name -- keep it default 
     10. Paths - Keep it default
     11. Install
     12. Restart & Login with Doamin User this time
@@ -86,9 +85,9 @@ Very first step in configuring SQL Server 2019 cluster is to have Windows Cluste
         1. Control Panel --> System and Security --> Windows Defender Firewall --> Turn Off Windows Defender Firewall
 
 ## 4. Adding nodes to Domain
-1. Validate if you can ping to Domain from both the nodes - ping GOSI.LOCAL
+1. Validate if you can ping to Domain from both the nodes - ping gosi.gov.sa
 2. Assign domain name for both nodes 
-   - This PC --> Properties --> Advanced System Settings --> Member Of Domain - GOSI.LOCAL
+   - This PC --> Properties --> Advanced System Settings --> Member Of Domain - gosi.gov.sa
    - Specify credentials for Domain Admin - GOSI\Administrator & P@ssword1
    - Restart server
    - Follow same steps for both nodes
@@ -176,15 +175,16 @@ In order to configure SQL Server 2019 Cluster we should first have Windows Serve
     6. Restart the machine
     7. Do it for both the nodes
 ### c. Configure Windows Cluster
-    1. Open "Failover Cluster Manager"
-    2. Select "Create Cluster"
-    3. Add both nodes GOSI-NODE1 & GOSI-NODE2
-    4. Perform validation by selecting all required tests
-    5. Validate the report and check the status 
-    6. Specify cluser name - WinServerCluster
-    7. Specify IP Address - 192.168.80.25
-    8. Select "Add all eligible storege to cluster"
-    9. Click Finish
+    1. Turn on DC
+    2. Open "Failover Cluster Manager" in node1
+    3. Select "Create Cluster"
+    4. Add both nodes GOSI-NODE1 & GOSI-NODE2
+    5. Perform validation by selecting all required tests
+    6. Validate the report and check the status 
+    7. Specify cluser name - WinServerCluster
+    8. Specify IP Address - 192.168.80.25
+    9. Select "Add all eligible storege to cluster"
+    10. Click Finish
 ### d. Validate witness / quorum disk
     1. Right click on "WinServerCluster" --> More Actions --> Configure Cluster Quorum Settings
     2. Next --> select quorum witness
@@ -195,7 +195,7 @@ In order to configure SQL Server 2019 Cluster we should first have Windows Serve
 ## 7. SQL Server 2019 Installation - Prerequisite
 
 ### a. Creating Service Accounts
-    1. Open "Active Directory Users and Computers"
+    1. Open "Active Directory Users and Computers" in DC
     2. Create AD Group "SQL ADMIN" for all Admins, and give Domain Admin or Local Admin access to this group.
     3. Add individual Domain Accounts to "SQL ADMIN". e.g. Add GOSI\3114 or GOSI\3115 to group "SQL ADMIN"
     4. Make AD Group "SQL ADMIN" as a Local Admin to each node
@@ -205,15 +205,16 @@ In order to configure SQL Server 2019 Cluster we should first have Windows Serve
        - SQL.SERVER
        - SQL.AGENT   
        
-### b. Grant Windows Rights to SQL Server Service account
+### b. Grant Windows Rights to SQL Server Service account on both nodes
     1. Open "Local Group Policy Editor"
-    2. Add above listed SA accounts to following listing
+       Computer configuration --> Windows settings --> Security settings --> Local policies --> User rights assignment-->
+    2. Add above listed SA accounts to following listing:
        - Perform volume maintenance tasks
        - Lock pages in memory
 
 ### c. Changing to CSVFS (Cluster Shared Volume File System) format
     1. Sharing Disks between 2 nodes
-       - Open Administrative Tools --> Failover Cluster Manager
+       - Open Failover Cluster Manager
        - Create 2 Empty Roles - Node1 & Node2
        - Assign Preferred Owner as Node1, Node2 & vice versa       
        - Assign Storage to each node
@@ -222,10 +223,7 @@ In order to configure SQL Server 2019 Cluster we should first have Windows Serve
 ## 8. SQL Server 2019 Installation 
 1. SQL Server Editions & Licencing 
     https://download.microsoft.com/download/6/6/0/66078040-86d8-4f6e-b0c5-e9919bbcb537/SQL%20Server%202019%20Licensing%20guide.pdf <br>
-    You can validate the cores by
-    1. Control Panel\System and Security\System and check Processors
-    2. Or Open task manager --> Open Resoure Monitor --> Click on CPU
-    3. Or Advanced System Settings --> Hardware --> Device Manager --> Processors
+    
 2. Download SQL Server Developer Edition from https://www.microsoft.com/en-us/sql-server/sql-server-downloads
     1. Once download, run the installer and choose "Download Media" option
     2. Select following options on next screen
@@ -236,7 +234,7 @@ In order to configure SQL Server 2019 Cluster we should first have Windows Serve
     4. Click on ISO, and you can start SQL Server Installation by running Setup.exe
 3. Installation Steps
 
-    2. Re-Name Network 
+    2. Re-Name Network in failover
        - Cluster Network 1 --> Cluster Nodes
        - Cluster Network 2 --> Shared Drives
        - Cluster Network 3 --> Heartbeat [This will verify if both nodes are up & running; if one of the node is down, it will start failover]
@@ -250,31 +248,31 @@ In order to configure SQL Server 2019 Cluster we should first have Windows Serve
        - Shared Feature Directory (x86) - C:\Program Files (x86)\Microsoft SQL Server\
     9. Specify SQL Server Network Name - GOSISERVER 
     10. This will be used to connect to SQL Server, you can skip named instance and keep default instance
-    11. Specify Disks which you want to allocate to that SQL Server instance. In our case Disk 1,3,5 are for first instance & Disk 2,4,6 are for second instance
+    11. Specify Disks which you want to allocate to that SQL Server instance.
     12. Specify IP Address for SQL failover cluster - this has to be of same range \ network of your node - which is 192.168.80.30
     13. Specify Service Accounts & Change startup type to Automatic
        - SQL Server Agent - SQL.AGENT & Specify Password
        - SQL Server Database Engine - SQL.SERVER & Specify Password
-       - Select "Grant Perform Volume Maintenance Tasks privileges to SQL Server Database Engine Services"
+       - Check on "Grant Perform Volume Maintenance Tasks privileges to SQL Server Database Engine Services"
     14. Select "Mixed Mode" Authentication
        - Specify password for SA account as "P@ssword1"
        - Add group "SQL ADMIN" as SQL Administrator
     15. Specify Data Directories     
-       - Select data root directory as "C:\ClusterStorage\Volume1\MSSQL\Data01"
-       - Select User database directory as "C:\ClusterStorage\Volume1\MSSQL\Data01\MSSQL15.DGOGATE\MSSQL\Data"
-       - Select User database log directory as "C:\ClusterStorage\Volume3\MSSQL\Log01\MSSQL15.DGOGATE\MSSQL\Data"
-    16. Temp DB
-        - Since in our case - logical processors are 2, SQL installer intelligently took "No. of Files" as 2        
+       - Select data root directory as "C:\Data01\Data"
+       - Select User database directory as "C:\Data01\Data"
+       - Select User database log directory as "C:\Log01\Log"
+       - Select Backup directory as "C:\Temp01\Temp"
+    16. Temp DB      
         - Initial Size 1024 MB
-        - Select data directory as - C:\ClusterStorage\Volume5\MSSQL\Temp01
-        - Select log directory as - C:\ClusterStorage\Volume5\MSSQL\Temp01
+        - Select data directory as - C:\Temp01\Temp
+        - Select log directory as - C:\Temp01\Temp
         - Keep "Temp log file Size configuration" as default
     17. MaxDOP
         - Total no. of logical processors we have are 2 
     18. Memory
         - Click on "Recommended"
         - Since we have total 2 GB avilable for VM, change max memory to 1024 MB / 1 GB
-        - Select "Click here to accept the recommended memory configurations for the SQL Server Database Engine"
+        - Check on "Click here to accept the recommended memory configurations for the SQL Server Database Engine"
         
     19. FileStream
         - ignore this
