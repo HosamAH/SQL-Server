@@ -290,7 +290,7 @@ In order to configure SQL Server 2019 Cluster we should first have Windows Serve
     3. Select "Developer" Edition
     4. Accept "License Aggregement"
     5. All validations should be Ok
-    6. Specify SQL Server Instance - in our case its a default instance, name of node2, Cluster Network Name (dgogate) & name of node1. This is all default and no need to modify anything here.
+    6. Specify SQL Server Instance - in our case its a default instance, name of node2, Cluster Network Name (GOSISERVER) & name of node1. This is all default and no need to modify anything here.
     7. IP Address of SQL Instance will appear automatically
     8. SQL Server & Agent Services and corresponding Service Accounts will appear; specify password. Select check box for volume maintenance task
     9. Install
