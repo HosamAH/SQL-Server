@@ -98,7 +98,7 @@ Very first step in configuring SQL Server 2019 cluster is to have Windows Cluste
 DC Server / Node will act as Storage or SAN. We will create 6 drives there as below:
 1. 2 Data Drives (5 GB Each) - Data01 (G) & Data02 (H)
 2. 2 Log Drives (3 GB Each) - Log01 (L) & Log02 (M)
-3. 2 Temp Drives (2 GB Each) - Temp01 (T) & Temp02 (U)
+3. 2 Temp Drives (5 GB Each) - Temp01 (T) & Temp02 (U)
 4. Quorum Drive (1 GB)
 
 These drives will share with other nodes, wherein we will actually install & configure SQL Server 2019 Active \ Active Cluster.
