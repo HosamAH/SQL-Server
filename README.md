@@ -1,8 +1,8 @@
-### SQL Server 2019 Active / Active Cluster on Windows Server 2019 Cluster
+### SQL Server 2019 Cluster on Windows Server 2019 Cluster
 
 
 # Intruduction
-In this article we are going to see how to configure SQL Server 2019 Active / Active Cluster. Following are the pre-requisit for that
+We are going to see how to configure SQL Server 2019 Cluster. Following are the pre-requisit for that
 
 ## Softwares needed
 1. Windows Server 2019 Evaluation Edition - https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2019
@@ -40,8 +40,8 @@ Very first step in configuring SQL Server 2019 cluster is to have Windows Cluste
     1. Click on AD-DS Role at Server Manager
     2. Click More
     3. Select Action - Promote server to domain controller
-    4. Add a new forest (Since we don't have any existing domain)
-    5. Give domain name as - gosi.gov.sa [you can give any name which you want eg. abc.xyz.pqr]
+    4. Add a new forest 
+    5. Give domain name as - gosi.gov.sa
     6. Click Next
     7. Specify DSRM (directory service recovery mode) password
     8. No need to create DNS deligation
@@ -95,15 +95,15 @@ Very first step in configuring SQL Server 2019 cluster is to have Windows Cluste
    - Validate nodes in Domain Controller using "Active Directory Users and Computers"
 
 ## 5. Installation of iScassi Target
-DC Server / Node will act as Storage or SAN. We will create 6 drives there as below:
+DC Server / Node will act as Storage or SAN. We will create 6 drives as below:
 1. 2 Data Drives (5 GB Each) - Data01 (G) & Data02 (H)
 2. 2 Log Drives (3 GB Each) - Log01 (L) & Log02 (M)
 3. 2 Temp Drives (5 GB Each) - Temp01 (T) & Temp02 (U)
 4. Quorum Drive (1 GB)
 
-These drives will share with other nodes, wherein we will actually install & configure SQL Server 2019 Active \ Active Cluster.
+These drives will be shared with other nodes, we will actually install & configure SQL Server 2019 Cluster.
 
-Now, in order to create & share \ present these drives (iscasi luns) to other nodes, we need to follow following steps
+Now, in order to create & share \ present these drives (iscasi luns) to other nodes, we need to follow the following steps
 ### a. Installation of iSCSI Target Server
         1. Open Server Manager
         2. Local Server --> Manage --> Add Roles & Features
@@ -160,8 +160,8 @@ Now, in order to create & share \ present these drives (iscasi luns) to other no
 ## 6. Installing & Configuring Windows Server 2019 Cluster
 In order to configure SQL Server 2019 Cluster we should first have Windows Server 2019 cluster. This Windows Cluster 2019 will be between GOSI-NODE1 & GOSI-NODE2, as Domain Controller node is not required now.
 ### a. Add new Network Adapter Cards
-    1. First step of this process is to add 2 separate NIC Cards to each node
-    2. Assign IP Address to each of them as below
+    1. Add 2 separate NIC Cards to each node
+    2. Assign IP Address to each node as below
        - GOSI-NODE1 - 172.16.0.15
        - GOSI-NODE2 - 172.16.0.20
     3. Disable Firewall
@@ -197,7 +197,7 @@ In order to configure SQL Server 2019 Cluster we should first have Windows Serve
 ### a. Creating Service Accounts
     1. Open "Active Directory Users and Computers" in DC
     2. Create AD Group "SQL ADMIN" for all Admins, and give Domain Admin or Local Admin access to this group.
-    3. Add individual Domain Accounts to "SQL ADMIN". e.g. Add GOSI\3114 or GOSI\3115 to group "SQL ADMIN"
+    3. Add individual Domain Accounts to "SQL ADMIN". e.g. Add GOSI\003114 or GOSI\003115 to group "SQL ADMIN"
     4. Make AD Group "SQL ADMIN" as a Local Admin to each node
        - Open "Edit Local Users and Groups"
        - Under Groups section, select "Administrator" group and add "SQL ADMIN" in it.
