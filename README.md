@@ -11,7 +11,7 @@ We are going to see how to configure SQL Server 2019 Cluster. Following are the 
 
 
 # Configuring Windows Server Cluster
-Very first step in configuring SQL Server 2019 cluster is to have Windows Cluster first. Now there are many steps involved while creating Windows Cluster itself. Following are the steps which you can follow in-order to configure Windows Server Cluster
+First step in configuring SQL Server cluster is to have Windows Cluster first. Following are the steps to configure Windows Server Cluster
 
 ## 1. Installation of Windows Server 2019 Server
 1. Install Windows Server 2019 by creating a Virtual Machine
@@ -95,15 +95,15 @@ Very first step in configuring SQL Server 2019 cluster is to have Windows Cluste
    - Validate nodes in Domain Controller using "Active Directory Users and Computers"
 
 ## 5. Installation of iScassi Target
-DC Server / Node will act as Storage or SAN. We will create 6 drives as below:
+DC Server / Node will act as Storage or SAN. create 6 drives as below:
 1. 2 Data Drives (5 GB Each) - Data01 (G) & Data02 (H)
 2. 2 Log Drives (3 GB Each) - Log01 (L) & Log02 (M)
 3. 2 Temp Drives (5 GB Each) - Temp01 (T) & Temp02 (U)
 4. Quorum Drive (1 GB)
 
-These drives will be shared with other nodes, we will actually install & configure SQL Server 2019 Cluster.
+These drives will be shared with other nodes.
 
-Now, in order to create & share \ present these drives (iscasi luns) to other nodes, we need to follow the following steps
+In order to create & share \ present these drives (iscasi luns) to other nodes, follow the following steps
 ### a. Installation of iSCSI Target Server
         1. Open Server Manager
         2. Local Server --> Manage --> Add Roles & Features
@@ -143,7 +143,7 @@ Now, in order to create & share \ present these drives (iscasi luns) to other no
         9. Specify Drive Letter
         10. Specify following settings
            - File System - NTFS
-           - Allocation Unit Size -- 64 KB 
+           - Allocation Unit Size -- 64 KB -- https://docs.aws.amazon.com/prescriptive-guidance/latest/sql-server-ec2-best-practices/ntfs-size.html
            - Volume Label
            - Select "Perform Quick Format"
            - Finish
@@ -271,7 +271,7 @@ In order to configure SQL Server 2019 Cluster we should first have Windows Serve
         - Total no. of logical processors we have are 2 
     18. Memory
         - Click on "Recommended"
-        - Since we have total 2 GB avilable for VM, change max memory to 1024 MB / 1 GB
+        - Change max memory to 1024 MB / 1 GB
         - Check on "Click here to accept the recommended memory configurations for the SQL Server Database Engine"
         
     19. FileStream
